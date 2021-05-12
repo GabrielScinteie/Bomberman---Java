@@ -32,24 +32,7 @@ public abstract class Character extends Item
         \param height Inaltimea imaginii caracterului.
      */
 
-    protected boolean isCollision(){
-        // x + xMove, y + yMove = pozitia la care se incearca sa se ajunga
-        // + width * 7/8, + height * 7/8, fac dreptunghiul de coliziune mai mic pentru a fi mai usoara manevrarea prin spatii stramte
-        // Verific daca pozitia viitoare are coliziune in partea de stanga - sus
-        if(refLink.GetMap().GetTile((int)(x + xMove)/32,(int)(y + yMove)/32).IsSolid() == true)
-            return true;
-        // Verific daca pozitia viitoare are coliziune in partea de dreapta - jos
-        if(refLink.GetMap().GetTile((int)((x+xMove + width * 6/8)/32),(int)((y+yMove+height*6/8)/32)).IsSolid() == true)
-            return true;
-        // Verific daca pozitia viitoare are coliziune in partea de stanga - jos
-        if(refLink.GetMap().GetTile((int)((x+xMove)/32),(int)((y+yMove+height*6/8)/32)).IsSolid() == true)
-            return true;
-        // Verific daca pozitia viitoare are coliziune in partea de dreapta - sus
-        if(refLink.GetMap().GetTile((int)((x+xMove + width*6/8)/32),(int)((y+yMove)/32)).IsSolid() == true)
-            return true;
-
-        return false;
-    }
+    protected abstract boolean isCollision();
 
     public Character(RefLinks refLink, float x, float y, int width, int height)
     {
@@ -85,6 +68,7 @@ public abstract class Character extends Item
             ///Aduna la pozitia curenta numarul de pixeli cu care trebuie sa se deplaseze pe axa X.
 
             x += xMove;
+            //this.bounds.x = (int)x;
 
     }
 
@@ -96,7 +80,7 @@ public abstract class Character extends Item
             ///Aduna la pozitia curenta numarul de pixeli cu care trebuie sa se deplaseze pe axa Y.
 
             y += yMove;
-
+            //this.bounds.y = (int)y;
     }
 
     /*! \fn public int GetLife()
@@ -161,5 +145,6 @@ public abstract class Character extends Item
     {
         this.yMove = yMove;
     }
+
 }
 

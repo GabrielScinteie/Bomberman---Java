@@ -130,4 +130,6 @@ public abstract class Item
     {
         bounds = attackBounds;
     }
+
+    public Rectangle getBounds(){ return bounds;}
 }

@@ -1,6 +1,9 @@
 package PaooGame.States;
 
+import PaooGame.Bombs.BombManager;
 import PaooGame.Camera;
+import PaooGame.Explosion.Explosion;
+import PaooGame.Explosion.ExplosionManager;
 import PaooGame.Items.EnemiesManager;
 import PaooGame.Items.Enemy;
 import PaooGame.Items.Hero;
@@ -34,6 +37,7 @@ public class PlayState extends State
         map = new Map(refLink);
             ///Referinta catre harta construita este setata si in obiectul shortcut pentru a fi accesibila si in alte clase ale programului.
         refLink.SetMap(map);
+        Explosion.initFireMap(refLink);
             ///Construieste eroul
         hero = new Hero(refLink,64, 64);
         refLink.SetHero(hero);
@@ -41,6 +45,8 @@ public class PlayState extends State
         camera = new Camera(refLink, cameraRect);
         refLink.SetCamera(camera);
         EnemiesManager.initEnemies(refLink);
+        BombManager.setRefLink(refLink);
+        ExplosionManager.setRefLink(refLink);
     }
 
     /*! \fn public void Update()
@@ -52,6 +58,8 @@ public class PlayState extends State
         map.Update();
         camera.Update();
         EnemiesManager.Update();
+        BombManager.Update();
+        ExplosionManager.Update();
         hero.Update();
     }
 
@@ -64,7 +72,10 @@ public class PlayState extends State
     public void Draw(Graphics g)
     {
         map.Draw(g);
+        BombManager.Draw(g);
+        ExplosionManager.Draw(g);
         hero.Draw(g);
         EnemiesManager.Draw(g);
+
     }
 }

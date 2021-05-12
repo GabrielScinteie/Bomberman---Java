@@ -2,6 +2,7 @@ package PaooGame;
 
 import java.awt.geom.Rectangle2D;
 
+// Aceasta clasa ne ajuta la implementarea efectului de scrolling
 public class Camera {
     private Rectangle2D.Double camera; /*!< Referinta catre camera ce cuprinde dreptunghiul ce se vede la un moment de timp.*/
     private RefLinks refLink; /*!< Referinta catre shortcut. */

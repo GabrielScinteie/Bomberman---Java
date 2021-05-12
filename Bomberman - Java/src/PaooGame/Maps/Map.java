@@ -19,8 +19,8 @@ public class Map
     private int width;          /*!< Latimea hartii in numar de dale.*/
     private int height;         /*!< Inaltimea hartii in numar de dale.*/
     private int [][] tiles;     /*!< Referinta catre o matrice cu codurile dalelor ce vor construi harta.*/
-    private int alreadyRead = 0;
-    private int[][] map;
+    private int alreadyRead = 0; /* Variabila ce ne spune daca harta a fost incarcata pentru a se incarca doar o data.*/
+    private int[][] map;        /* O variabila temporala ce o folosesc pentru a incarca harta.*/
     /*! \fn public Map(RefLinks refLink)
         \brief Constructorul de initializare al clasei.
 
@@ -82,6 +82,10 @@ public class Map
             return Tile.grassTile;
         }
         return t;
+    }
+
+    public void SetTile(int x, int y, int code){
+        tiles[x][y] = code;
     }
 
     /*! \fn private void LoadWorld()

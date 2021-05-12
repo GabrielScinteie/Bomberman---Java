@@ -19,6 +19,12 @@ public class Assets
     public static BufferedImage wall;
     public static BufferedImage enemy;
     public static BufferedImage destructableWall;
+    public static BufferedImage []bomb = new BufferedImage[3];
+    public static BufferedImage [][]fire = new BufferedImage[9][4]; // linia 0 <-> centru
+                                                                    // linia 1 <-> sus
+                                                                    // linia 2 <-> dreapta
+                                                                    // linia 3 <-> jos
+                                                                    // linia 4 <-> stanga
 
     /*! \fn public static void Init()
         \brief Functia initializaza referintele catre elementele grafice utilizate.
@@ -41,5 +47,17 @@ public class Assets
         heroDown = sheet.crop(3,0);
         destructableWall = sheet.crop(4,3);
         enemy = sheet.crop(0,18);
+        bomb[0] = sheet.crop(2,3); // animatia 1 a exploziei
+        bomb[1] = sheet.crop(1,3); // animatia 2 a exploziei
+        bomb[2] = sheet.crop(0,3); // animatia 3 a exploziei
+        fire[0][0] = sheet.crop(2,6);
+        fire[1][0] = sheet.crop(2,5);
+        fire[2][0] = sheet.crop(2,4);
+        fire[3][0] = sheet.crop(3,6);
+        fire[4][0] = sheet.crop(4,6);
+        fire[5][0] = sheet.crop(2,7);
+        fire[6][0] = sheet.crop(2,8);
+        fire[7][0] = sheet.crop(1,6);
+        fire[8][0] = sheet.crop(0,6);
     }
 }
