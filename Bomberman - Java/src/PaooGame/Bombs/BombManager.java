@@ -35,6 +35,13 @@ public class BombManager {
 
     }
 
+    public static void clean(){
+        while(allBombs.size() != 0){
+            allBombs.remove(0);
+        }
+
+    }
+
     public static void Draw(Graphics g){
         for(int i = 0; i < allBombs.size(); i++)
             allBombs.get(i).Draw(g);

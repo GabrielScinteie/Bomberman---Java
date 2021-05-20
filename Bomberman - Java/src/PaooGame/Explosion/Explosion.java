@@ -14,7 +14,7 @@ public class Explosion {
     protected int height;               /*!< Inaltimea imaginii entitatii.*/
     protected Rectangle bounds;         /*!< Dreptunghiul curent de coliziune.*/
     protected RefLinks refLink;         /*!< O referinte catre un obiect "shortcut", obiect ce contine o serie de referinte utile in program.*/
-    public static int lifeTime = 1; /* Timpul de viata a exploziei*/
+    public static double lifeTime = 1; /* Timpul de viata a exploziei*/
     private double startTime;
     private int partOfAnimation; /* partOfAnimation = 0 <-> the first animation of explosion
                                     partOfAnimation = 1 <-> the second part of explosion
@@ -62,39 +62,51 @@ public class Explosion {
         Tile left2  = refLink.GetMap().GetTile((x - 2 * DEFAULT_EXPLOSION_WIDTH)/32, y/32);
 
         if(up1.GetId() == 2 || up1.GetId() == 0){
+            boolean wasWall = false;
+            if(up1.GetId() == 2)
+                wasWall = true;
             fire[x/32][(y - DEFAULT_EXPLOSION_HEIGHT)/32] = 1;
             refLink.GetMap().SetTile(x/32,(y - DEFAULT_EXPLOSION_HEIGHT)/32,0);
 
-            if(up2.GetId() == 2 || up2.GetId() == 0){
+            if(up2.GetId() == 2 || up2.GetId() == 0 && !wasWall){
                 fire[x/32][(y - 2 * DEFAULT_EXPLOSION_HEIGHT)/32] = 2;
                 refLink.GetMap().SetTile(x/32,(y - 2 * DEFAULT_EXPLOSION_HEIGHT)/32,0);
             }
         }
 
         if(right1.GetId() == 2 || right1.GetId() == 0){
+            boolean wasWall = false;
+            if(right1.GetId() == 2)
+                wasWall = true;
             fire[(x + 32)/32][y/32] = 3;
             refLink.GetMap().SetTile((x + DEFAULT_EXPLOSION_WIDTH)/32, y/32,0);
 
-            if(right2.GetId() == 2 || right2.GetId() == 0){
+            if(right2.GetId() == 2 || right2.GetId() == 0 && !wasWall){
                 fire[(x + 2*32)/32][y/32] = 4;
                 refLink.GetMap().SetTile((x + 2 * DEFAULT_EXPLOSION_WIDTH)/32, y/32,0);
             }
         }
 
         if(down1.GetId() == 2 || down1.GetId() == 0){
+            boolean wasWall = false;
+            if(down1.GetId() == 2)
+                wasWall = true;
             fire[x/32][(y + 32)/32] = 5;
             refLink.GetMap().SetTile(x/32,(y + DEFAULT_EXPLOSION_HEIGHT)/32,0);
 
-            if(down2.GetId() == 2 || down2.GetId() == 0){
+            if(down2.GetId() == 2 || down2.GetId() == 0 && !wasWall){
                 fire[x/32][(y + 2*32)/32] = 6;
                 refLink.GetMap().SetTile(x/32,(y + 2*  DEFAULT_EXPLOSION_HEIGHT)/32,0);
             }
         }
 
         if(left1.GetId() == 2 || left1.GetId() == 0){
+            boolean wasWall = false;
+            if(left1.GetId() == 2)
+                wasWall = true;
             fire[(x-32)/32][y/32] = 7;
             refLink.GetMap().SetTile((x - DEFAULT_EXPLOSION_WIDTH)/32, y/32,0);
-            if(left2.GetId() == 2 || left2.GetId() == 0){
+            if(left2.GetId() == 2 || left2.GetId() == 0 && !wasWall){
                 fire[(x - 2 * 32)/32][y/32] = 8;
                 refLink.GetMap().SetTile((x - 2* DEFAULT_EXPLOSION_WIDTH)/32, y/32,0);
             }

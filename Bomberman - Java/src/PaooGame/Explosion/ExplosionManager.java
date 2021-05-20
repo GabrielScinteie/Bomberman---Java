@@ -20,13 +20,19 @@ public class ExplosionManager {
     public static void Update(){
         for(int i = 0; i < allExplosion.size(); i++){
             double time = allExplosion.get(i).getTime();
-            if(time < Bomb.getLifetime()){
+            if(time < Explosion.lifeTime){
                 allExplosion.get(i).Update();
             }
             else {
                 allExplosion.get(i).clean();
                 allExplosion.remove(i);
             }
+        }
+    }
+
+    public static void clean(){
+        while(allExplosion.size() != 0){
+            allExplosion.remove(0);
         }
     }
 

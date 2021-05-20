@@ -45,6 +45,9 @@ public abstract class Character extends Item
         yMove   = 0;
     }
 
+    float getSpeed(){return speed;}
+    void setSpeed(float speed){this.speed = speed;}
+
     /*! \fn public void Move()
         \brief Modifica pozitia caracterului
      */

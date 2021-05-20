@@ -13,8 +13,9 @@ import PaooGame.RefLinks;
 public abstract class State
 {
         ///Urmatoarele atribute sunt statice pentru a evita dealocarea spatiului de memorie la trecerea dintr-o stare in alta.
-    private static State previousState  = null; /*!< Referinta catre starea anterioara a jocului.*/
-    private static State currentState   = null; /*!< Referinta catre starea curenta a jocului: game, meniu, settings, about etc.*/
+    protected static State previousState  = null; /*!< Referinta catre starea anterioara a jocului.*/
+    protected static State currentState   = null; /*!< Referinta catre starea curenta a jocului: game, meniu, settings, about etc.*/
+    public static long time;
     protected RefLinks refLink;
     public State(RefLinks refLink)
     {
@@ -26,10 +27,12 @@ public abstract class State
 
         \param state Noua stare a programului (jocului).
      */
+
     public static void SetState(State state)
     {
         previousState = currentState;
         currentState = state;
+        time = System.currentTimeMillis();
     }
 
     public static State GetState()

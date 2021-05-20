@@ -1,5 +1,6 @@
 package PaooGame.Graphics;
 
+import java.awt.*;
 import java.awt.image.BufferedImage;
 
 /*! \class public class Assets
@@ -20,6 +21,7 @@ public class Assets
     public static BufferedImage enemy;
     public static BufferedImage destructableWall;
     public static BufferedImage []bomb = new BufferedImage[3];
+    public static Image heart;
     public static BufferedImage [][]fire = new BufferedImage[9][4]; // linia 0 <-> centru
                                                                     // linia 1 <-> sus
                                                                     // linia 2 <-> dreapta
@@ -36,6 +38,7 @@ public class Assets
     {
             /// Se creaza temporar un obiect SpriteSheet initializat prin intermediul clasei ImageLoader
         SpriteSheet sheet = new SpriteSheet(ImageLoader.LoadImage("/textures/BombermanSpriteSheet.png"));
+        SpriteSheet heartSheet = new SpriteSheet(ImageLoader.LoadImage("/textures/heart.png"));
 
             /// Se obtin subimaginile corespunzatoare elementelor necesare.
         grass = sheet.crop(0, 4);
@@ -59,5 +62,8 @@ public class Assets
         fire[6][0] = sheet.crop(2,8);
         fire[7][0] = sheet.crop(1,6);
         fire[8][0] = sheet.crop(0,6);
+        //heart = heartSheet.getSubImage(0,0,255,255).getScaledInstance(32,32, Image.SCALE_DEFAULT);
+        heart = heartSheet.getSubImage(0,0,220,220);
+
     }
 }

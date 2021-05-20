@@ -33,6 +33,11 @@ public class SpriteSheet
         \param x numarul dalei din sprite sheet pe axa x.
         \param y numarul dalei din sprite sheet pe axa y.
      */
+
+    public BufferedImage getSubImage(int x, int y, int width, int height){
+        return spriteSheet.getSubimage(x * tileWidth, y * tileHeight, width, height);
+    }
+
     public BufferedImage crop(int x, int y)
     {
             /// Subimaginea (dala) este regasita in sprite sheet specificad coltul stanga sus

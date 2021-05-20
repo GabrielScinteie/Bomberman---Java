@@ -3,6 +3,7 @@ package PaooGame;
 import PaooGame.GameWindow.GameWindow;
 import PaooGame.Graphics.Assets;
 import PaooGame.Input.KeyManager;
+import PaooGame.Input.MouseManager;
 import PaooGame.Items.Hero;
 import PaooGame.States.*;
 import PaooGame.Tiles.Tile;
@@ -65,11 +66,16 @@ public class Game implements Runnable
 
         ///Available states
     private State playState;            /*!< Referinta catre joc.*/
+    private State chooseLevelState;     /*!<Referinta catre meniul de alegere a nivelului.*/
     private State menuState;            /*!< Referinta catre menu.*/
     private State settingsState;        /*!< Referinta catre setari.*/
+    private State quitState;            /*!< Referinta catre inchidere joc.*/
     private State aboutState;           /*!< Referinta catre about.*/
+    private State levelCompletedState;  /*!< Referinta catre starea cand player-ul a castigat un level.*/
+    public State youLostState;          /*!< Referinta catre starea cand player-ul ramane fara vieti.*/
     private KeyManager keyManager;      /*!< Referinta catre obiectul care gestioneaza intrarile din partea utilizatorului.*/
-    private RefLinks refLink;            /*!< Referinta catre un obiect a carui sarcina este doar de a retine diverse referinte pentru a fi usor accesibile.*/
+    private MouseManager mouseManager;  /*!< Referinta catre obiectul care gestioneaza input-ul mouse-ului din partea utilizatorului*/
+    private RefLinks refLink;           /*!< Referinta catre un obiect a carui sarcina este doar de a retine diverse referinte pentru a fi usor accesibile.*/
 
     private Tile tile; /*!< variabila membra temporara. Este folosita in aceasta etapa doar pentru a desena ceva pe ecran.*/
 
@@ -93,6 +99,8 @@ public class Game implements Runnable
         runState = false;
             ///Construirea obiectului de gestiune a evenimentelor de tastatura
         keyManager = new KeyManager();
+        mouseManager = new MouseManager();
+
     }
 
     /*! \fn private void init()
@@ -107,18 +115,29 @@ public class Game implements Runnable
             /// Este construita fereastra grafica.
         wnd.BuildGameWindow();
             ///Sa ataseaza ferestrei managerul de tastatura pentru a primi evenimentele furnizate de fereastra.
+        wnd.GetWndFrame().addMouseMotionListener(mouseManager);
+        wnd.GetWndFrame().addMouseListener(mouseManager);
+        wnd.GetCanvas().addMouseListener(mouseManager);
+        wnd.GetCanvas().addMouseMotionListener(mouseManager);
         wnd.GetWndFrame().addKeyListener(keyManager);
+
             ///Se incarca toate elementele grafice (dale)
         Assets.Init();
             ///Se construieste obiectul de tip shortcut ce va retine o serie de referinte catre elementele importante din program.
         refLink = new RefLinks(this);
+
+
+
             ///Definirea starilor programului
-        playState       = new PlayState(refLink);
         menuState       = new MenuState(refLink);
         settingsState   = new SettingsState(refLink);
         aboutState      = new AboutState(refLink);
+        chooseLevelState = new ChooseLevelState(refLink);
+        youLostState = new YouLostState(refLink);
+        levelCompletedState = new LevelCompletedState(refLink);
+
             ///Seteaza starea implicita cu care va fi lansat programul in executie
-        State.SetState(playState);
+        State.SetState(menuState);
     }
 
     /*! \fn public void run()
@@ -148,7 +167,7 @@ public class Game implements Runnable
             if((curentTime - oldTime) > timeFrame)
             {
                 /// Actualizeaza pozitiile elementelor
-                Update();
+                    Update();
                 /// Deseneaza elementele grafica in fereastra.
                 Draw();
                 oldTime = curentTime;
@@ -219,11 +238,15 @@ public class Game implements Runnable
      */
     private void Update()
     {
-            ///Determina starea tastelor
-        keyManager.Update();
+
+
+
         ///Trebuie obtinuta starea curenta pentru care urmeaza a se actualiza starea, atentie trebuie sa fie diferita de null.
         if(State.GetState() != null)
         {
+            ///Determina starea tastelor
+            if(State.GetState().getClass().getSimpleName().equals("PlayState"))
+                keyManager.Update();
                 ///Actualizez starea curenta a jocului daca exista.
             State.GetState().Update();
         }
@@ -274,6 +297,7 @@ public class Game implements Runnable
             /// Elibereaza resursele de memorie aferente contextului grafic curent (zonele de memorie ocupate de
             /// elementele grafice ce au fost desenate pe canvas).
         g.dispose();
+
     }
 
     /*! \fn public int GetWidth()
@@ -299,5 +323,21 @@ public class Game implements Runnable
     {
         return keyManager;
     }
+
+    public MouseManager GetMouseManager(){
+        return mouseManager;
+    }
+
+    public State getPlayState(){return playState;}
+    public State getMenuState(){return menuState;}
+    public State getSettingsState(){return settingsState;}
+    public State getQuitState(){return quitState;}
+    public State getChooseLevelState(){return chooseLevelState;}
+    public State getYouLostState(){return youLostState;}
+    public State getLevelCompletedState(){return levelCompletedState;}
+    public State getAboutState(){return aboutState;}
+    public void setPlayState(PlayState playState){this.playState = playState;}
+    public GameWindow getGameWnd(){return wnd;}
+    public void setRunState(boolean x){runState = x;}
 }
 

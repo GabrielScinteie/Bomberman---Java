@@ -18,7 +18,7 @@ public class KeyManager implements KeyListener
     public boolean left;    /*!< Flag pentru tasta "stanga" apasata.*/
     public boolean right;   /*!< Flag pentru tasta "dreapta" apasata.*/
     public boolean space;   /*!< Flag pentru tasta "space" apasata.*/
-
+    public boolean escape;   /*!< Flag pentru tasta "escape" apasata.*/
     /*! \fn public KeyManager()
         \brief Constructorul clasei.
      */
@@ -31,11 +31,13 @@ public class KeyManager implements KeyListener
 
     public void Update()
     {
+        //System.out.println("Sunt in KeyManagerUpdate");
         up    = keys[KeyEvent.VK_W];
         down  = keys[KeyEvent.VK_S];
         left  = keys[KeyEvent.VK_A];
         right = keys[KeyEvent.VK_D];
         space = keys[KeyEvent.VK_SPACE];
+        escape = keys[KeyEvent.VK_ESCAPE];
     }
 
     /*! \fn public void keyPressed(KeyEvent e)

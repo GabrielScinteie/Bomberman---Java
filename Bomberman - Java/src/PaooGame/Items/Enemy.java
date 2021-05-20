@@ -22,6 +22,7 @@ public class Enemy extends Character{
         ///Apel al constructorului clasei de baza
         super(refLink, x, y, Character.DEFAULT_CREATURE_WIDTH, Character.DEFAULT_CREATURE_HEIGHT);
         bufferedImage = Assets.enemy;
+        speed = 1;
         dead = false;
         Random random = new Random();
         direction = random.nextInt(4);
@@ -93,7 +94,6 @@ public class Enemy extends Character{
                     return true;
                 }
             }
-
         }
 
         // Coliziune cu bombe
@@ -116,9 +116,7 @@ public class Enemy extends Character{
             if(temp1.intersects(temp2)){
                 return true;
             }
-
         }
-
         return false;
     }
 

@@ -3,10 +3,14 @@ package PaooGame.Items;
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
+import PaooGame.Explosion.Explosion;
 import PaooGame.RefLinks;
 import PaooGame.Graphics.Assets;
 import PaooGame.Bombs.*;
+import PaooGame.States.State;
+import PaooGame.Subscribers.Subscriber;
 
 /*! \class public class Hero extends Character
     \brief Implementeaza notiunea de erou/player (caracterul controlat de jucator).
@@ -19,9 +23,13 @@ import PaooGame.Bombs.*;
  */
 public class Hero extends Character
 {
+    private static Hero instance = null;          /*!<Referinta catre unica instanta a clasei Hero*/
     private BufferedImage image;    /*!< Referinta catre imaginea curenta a eroului.*/
     private double timeSinceLastBomb;     /*Durata de la ultima bomba pusa*/
     private double bombCooldown;
+    private boolean dead;
+    private int lifesLeft;
+    private ArrayList<Subscriber> subscribers = new ArrayList<Subscriber>();
     /*! \fn public Hero(RefLinks refLink, float x, float y)
         \brief Constructorul de initializare al clasei Hero.
 
@@ -29,25 +37,48 @@ public class Hero extends Character
         \param x Pozitia initiala pe axa X a eroului.
         \param y Pozitia initiala pe axa Y a eroului.
      */
-    public Hero(RefLinks refLink, float x, float y)
+
+    public void addSubscriber(Subscriber subscriber){subscribers.add(subscriber);}
+    public ArrayList<Subscriber> getSubscribers(){return subscribers;}
+    public void notifySubscribers(){
+        for(int i = 0; i < subscribers.size(); i++)
+            subscribers.get(i).update(this);
+    }
+
+    private Hero(RefLinks refLink, float x, float y)
     {
+
             ///Apel al constructorului clasei de baza
         super(refLink, x,y, Character.DEFAULT_CREATURE_WIDTH, Character.DEFAULT_CREATURE_HEIGHT);
             ///Seteaza imaginea de start a eroului
         image = Assets.heroStop;
         timeSinceLastBomb = System.nanoTime();
-        bombCooldown = 2;
+        bombCooldown = 1;
+        lifesLeft = 3;
+        dead = false;
             ///Stabilieste pozitia relativa si dimensiunea dreptunghiului de coliziune, starea implicita(normala)
         normalBounds.x = 0;
         normalBounds.y = 0;
-        normalBounds.width = 32;
-        normalBounds.height = 32;
+        normalBounds.width = 30;
+        normalBounds.height = 30;
 
             ///Stabilieste pozitia relativa si dimensiunea dreptunghiului de coliziune, starea de atac
         attackBounds.x = 10;
         attackBounds.y = 10;
         attackBounds.width = 38;
         attackBounds.height = 38;
+    }
+
+    public static Hero getInstance(RefLinks refLink, int x, int y){
+        if(instance == null){
+            instance = new Hero(refLink,x,y);
+        }
+
+        return instance;
+    }
+
+    public void reset(){
+        lifesLeft = 3;
     }
 
     @Override
@@ -70,6 +101,26 @@ public class Hero extends Character
         if(refLink.GetMap().GetTile((int)((x+xMove + width*6/8)/32),(int)((y+yMove)/32)).IsSolid() == true)
             return true;
 
+        if(Explosion.fire[(int)(x + xMove)/32][(int)(y + yMove)/32] != 0){
+            dead = true;
+            return true;
+        }
+
+        if(Explosion.fire[(int)(x + xMove + width * 6/8)/32][(int)(y + yMove)/32] != 0){
+            dead = true;
+            return true;
+        }
+
+        if(Explosion.fire[(int)(x + xMove + width*6/8)/32][(int)(y + yMove + height*6/8)/32] != 0){
+            dead = true;
+            return true;
+        }
+
+        if(Explosion.fire[(int)(x + xMove)/32][(int)(y + yMove + height*6/8)/32] != 0){
+            dead = true;
+            return true;
+        }
+
         // verific interactiunile cu monstrii
         for(int i = 0; i < EnemiesManager.getAllEnemies().size(); i++){
             Enemy enemy = EnemiesManager.getAllEnemies().get(i);
@@ -81,7 +132,8 @@ public class Hero extends Character
             temp2.y += enemy.GetY();
 
             if(temp1.intersects(temp2)){
-                x = y = 65;
+                dead = true;
+                return true;
             }
         }
 
@@ -100,7 +152,6 @@ public class Hero extends Character
             if(temp1.intersects(temp2) && !bomb.isPlayerInside()){
                 return true;
             }
-
         }
 
         return false;
@@ -114,6 +165,35 @@ public class Hero extends Character
     @Override
     public void Update()
     {
+        if(dead == true){
+            if(EnemiesManager.getLevel() == 1)
+            {
+                x = y = 65;
+            }else
+            {
+                if(EnemiesManager.getLevel() == 2)
+                {
+                    x = 3 * 32;
+                    y = 27 * 32;
+                }
+                else
+                {
+                    // daca s-a introdus un numar de nivel ce nu exista, asta este default-ul
+                    x = y = 65;
+                }
+            }
+            lifesLeft--;
+            notifySubscribers();
+            dead = false;
+        }
+
+        if(lifesLeft == 0){
+            reset();
+            State.SetState(refLink.GetGame().getYouLostState());
+            refLink.GetGame().getGameWnd().GetWndFrame().requestFocusInWindow();
+            return;
+        }
+
             ///Verifica daca a fost apasata o tasta
         GetInput();
             ///Actualizeaza pozitia
@@ -145,6 +225,11 @@ public class Hero extends Character
      */
 
 
+    public int getLifesLeft(){return lifesLeft;}
+    public void setStartingPosition(int x, int y){
+        this.x = x;
+        this.y = y;
+    }
     private void GetInput()
     {
             ///Implicit eroul nu trebuie sa se deplaseze daca nu este apasata o tasta
@@ -172,6 +257,12 @@ public class Hero extends Character
                     if(refLink.GetKeyManager().right)
                     {
                         xMove = speed;
+                    }
+                    else
+                    {
+                        if(refLink.GetKeyManager().escape){
+                            State.SetState(refLink.GetGame().getMenuState());
+                        }
                     }
 
         if(refLink.GetKeyManager().space)
