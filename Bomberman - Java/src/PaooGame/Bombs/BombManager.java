@@ -27,7 +27,7 @@ public class BombManager {
             else
             {
                 ExplosionManager.getallExplosions().add( new Explosion(refLink,(int)(allBombs.get(i).GetX()), (int)(allBombs.get(i).GetY())));
-                System.out.println(allBombs.get(i).GetX() + " " + (allBombs.get(i).GetY()));
+                //System.out.println(allBombs.get(i).GetX() + " " + (allBombs.get(i).GetY()));
 
                 allBombs.remove(i);
             }

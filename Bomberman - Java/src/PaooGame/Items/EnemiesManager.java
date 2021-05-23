@@ -19,20 +19,15 @@ public class EnemiesManager {
 
     public static void initEnemies(RefLinks refLinks){
         if(lvl == 1) {
+
             allEnemies.add(new Enemy(refLinks, 15 * 32, 3 * 32));
             numberOfEnemies++;
             allEnemies.add(new Enemy(refLinks, 6 * 32, 6 * 32));
             numberOfEnemies++;
             allEnemies.add(new Enemy(refLinks, 7 * 32, 27 * 32));
             numberOfEnemies++;
-            allEnemies.add(new Enemy(refLinks, 57 * 32, 2 * 32));
-            numberOfEnemies++;
-            allEnemies.add(new Enemy(refLinks, 57 * 32, 7 * 32));
-            numberOfEnemies++;
-            allEnemies.add(new Enemy(refLinks, 57 * 32, 11 * 32));
-            numberOfEnemies++;
-            allEnemies.add(new Enemy(refLinks, 57 * 32, 15 * 32));
-            numberOfEnemies++;
+
+
 
             allEnemies.add(new Enemy(refLinks, 2 * 32, 17 * 32));
             numberOfEnemies++;
@@ -41,26 +36,6 @@ public class EnemiesManager {
             allEnemies.add(new Enemy(refLinks, 19 * 32, 14 * 32));
             numberOfEnemies++;
 
-            allEnemies.add(new Enemy(refLinks, 28 * 32, 12 * 32));
-            numberOfEnemies++;
-            allEnemies.add(new Enemy(refLinks, 23 * 32, 2 * 32));
-            numberOfEnemies++;
-            allEnemies.add(new Enemy(refLinks, 35 * 32, 6 * 32));
-            numberOfEnemies++;
-
-
-            allEnemies.add(new Enemy(refLinks, 31 * 32, 27 * 32));
-            numberOfEnemies++;
-            allEnemies.add(new Enemy(refLinks, 51 * 32, 27 * 32));
-            numberOfEnemies++;
-            allEnemies.add(new Enemy(refLinks, 37 * 32, 23 * 32));
-            numberOfEnemies++;
-            allEnemies.add(new Enemy(refLinks, 57 * 32, 24 * 32));
-            numberOfEnemies++;
-            allEnemies.add(new Enemy(refLinks, 39 * 32, 13 * 32));
-            numberOfEnemies++;
-            allEnemies.add(new Enemy(refLinks, 47 * 32, 9 * 32));
-            numberOfEnemies++;
             allEnemies.add(new Enemy(refLinks, 24 * 32, 15 * 32));
             numberOfEnemies++;
 
@@ -92,8 +67,6 @@ public class EnemiesManager {
             numberOfEnemies++;
             allEnemies.add(new Enemy(refLinks, 39 * 32, 4 * 32));
             numberOfEnemies++;
-            allEnemies.add(new Enemy(refLinks, 44 * 32, 26 * 32));
-            numberOfEnemies++;
 
 
             for(int i = 0; i < allEnemies.size(); i++){
@@ -106,11 +79,11 @@ public class EnemiesManager {
         {
             allEnemies.add(new Enemy(refLinks, 9 * 32, 27 * 32));
             numberOfEnemies++;
-            allEnemies.add(new Enemy(refLinks, 8 * 32, 27 * 32));
-            numberOfEnemies++;
-            allEnemies.add(new Enemy(refLinks, 7 * 32, 27 * 32));
-            numberOfEnemies++;
             allEnemies.add(new Enemy(refLinks, 6 * 32, 27 * 32));
+            numberOfEnemies++;
+            allEnemies.add(new Enemy(refLinks, 30 * 32, 21 * 32));
+            numberOfEnemies++;
+            allEnemies.add(new Enemy(refLinks, 47 * 32, 11 * 32));
             numberOfEnemies++;
             allEnemies.add(new Enemy(refLinks, 57 * 32, 2 * 32));
             numberOfEnemies++;
@@ -165,12 +138,16 @@ public class EnemiesManager {
             numberOfEnemies++;
             allEnemies.add(new Enemy(refLinks, 19 * 32, 27 * 32));
             numberOfEnemies++;
+
             allEnemies.add(new Enemy(refLinks, 19 * 32, 22 * 32));
             numberOfEnemies++;
 
             for(int i = 0; i < allEnemies.size(); i++){
                 allEnemies.get(i).setSpeed((float)1.5);
             }
+
+
+
 
         }
     }
@@ -201,10 +178,10 @@ public class EnemiesManager {
     public static void Draw(Graphics g){
         for(int i = 0; i < allEnemies.size(); i++)
             allEnemies.get(i).Draw(g);
-        g.drawImage(Assets.enemy.getScaledInstance(32,32,Image.SCALE_DEFAULT), 880,0,null);
+        g.drawImage(Assets.enemy.getScaledInstance(32,32,Image.SCALE_DEFAULT), 2* 32,0,null);
         g.setFont(new Font("arial",Font.BOLD,40));
         g.setColor(Color.black);
-        g.drawString(numberOfEnemies.toString(),910,30);
+        g.drawString(numberOfEnemies.toString(),3*32,32);
     }
 
     public static void setLevel(int x){lvl = x;}

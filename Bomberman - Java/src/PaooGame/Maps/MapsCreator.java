@@ -13,10 +13,10 @@ public class MapsCreator {
     public Map getMap(int mapNumber) throws WrongMapNumberException {
         switch(mapNumber){
             case 1:
-                System.out.println("Map1");
+                //System.out.println("Map1");
                 return new Map1(refLink);
             case 2:
-                System.out.println("Map2");
+                //System.out.println("Map2");
                 return new Map2(refLink);
 
             default:

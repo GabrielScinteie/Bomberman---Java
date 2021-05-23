@@ -18,6 +18,7 @@ public class MenuState extends State
     public Rectangle settingsButton;
     public Rectangle quitButton;
     public Rectangle aboutButton;
+    public Rectangle highscoreButton;
 
     /*! \fn public MenuState(RefLinks refLink)
         \brief Constructorul de initializare al clasei.
@@ -39,7 +40,7 @@ public class MenuState extends State
         settingsButton = new Rectangle(GameWidth/10*4, GameHeight/8 * 4,GameWidth/5, GameHeight/12);
         aboutButton = new Rectangle(GameWidth/10*4, GameHeight/8 * 5,GameWidth/5, GameHeight/12);
         quitButton = new Rectangle(GameWidth/10*4, GameHeight/8 * 6,GameWidth/5, GameHeight/12);
-
+        highscoreButton = new Rectangle(GameWidth/10*7, GameHeight/8 * 6,GameWidth/4, GameHeight/12);
 
     }
 
@@ -74,6 +75,10 @@ public class MenuState extends State
 
                    if(aboutButton.contains(p)){
                        State.SetState(game.getAboutState());
+                   }
+
+                   if(highscoreButton.contains(p)){
+                       State.SetState(game.getHighscoreState());
                    }
 
                    if(quitButton.contains(p)){
@@ -136,6 +141,7 @@ public class MenuState extends State
         g2d.draw(settingsButton);
         g2d.draw(quitButton);
         g2d.draw(aboutButton);
+        g2d.draw(highscoreButton);
         //g2d.fillRect(playButton.x, playButton.y, playButton.width, playButton.height);
         //g2d.fillRect(settingsButton.x, settingsButton.y, settingsButton.width, settingsButton.height);
         //g2d.fillRect(quitButton.x, quitButton.y, quitButton.width, quitButton.height);
@@ -147,6 +153,7 @@ public class MenuState extends State
         g.drawString("Settings",settingsButton.x + settingsButton.width/10,settingsButton.y + settingsButton.height/10*8);
         g.drawString("About",aboutButton.x + aboutButton.width/10*2,aboutButton.y + aboutButton.height/10*8);
         g.drawString("Quit",quitButton.x + quitButton.width/10*3,quitButton.y + quitButton.height/10*8);
+        g.drawString("Highscores", highscoreButton.x + highscoreButton.width/10 - 10, highscoreButton.y + highscoreButton.height/10*8);
 
 
     }

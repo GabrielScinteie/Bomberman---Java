@@ -31,7 +31,7 @@ public class LevelCompletedState extends State{
 
         buttonFont = new Font("arial",Font.BOLD,40);
         titleFont = new Font("arial",Font.BOLD,80);
-        menuButton = new Rectangle(GameWidth/10*4 - GameWidth/50, GameHeight/2,GameWidth/4, GameHeight/10);
+        menuButton = new Rectangle(GameWidth/10*4 - GameWidth/50, GameHeight/8*6,GameWidth/4, GameHeight/12);
 
     }
 
@@ -63,11 +63,39 @@ public class LevelCompletedState extends State{
     @Override
     public void Draw(Graphics g)
     {
+        Graphics2D g2d = (Graphics2D)g;
+
         BufferedImage backgroundImage = Assets.grass;
         Image background = backgroundImage.getScaledInstance(refLink.GetGame().GetWidth(),refLink.GetGame().GetHeight(),Image.SCALE_DEFAULT);
         g.drawImage(background,0,0,null);
 
-        Graphics2D g2d = (Graphics2D)g;
+        Image bomberboy = Assets.heroRight.getScaledInstance(refLink.GetGame().GetWidth()/6,refLink.GetGame().GetHeight()/6,Image.SCALE_DEFAULT);
+        g.drawImage(bomberboy,refLink.GetGame().GetWidth()/2 - 200, refLink.GetGame().GetHeight()/2 + 30,null);
+
+        Image door = Assets.door.getScaledInstance(refLink.GetGame().GetWidth()/6,refLink.GetGame().GetHeight()/6,Image.SCALE_DEFAULT);
+        g.drawImage(door,refLink.GetGame().GetWidth()/2, refLink.GetGame().GetHeight()/2 + 30,null);
+
+
+        /*Image bomberboy = Assets.heroRight.getScaledInstance(refLink.GetGame().GetWidth()/4,refLink.GetGame().GetHeight()/4,Image.SCALE_DEFAULT);
+        g.drawImage(bomberboy,refLink.GetGame().GetWidth()/10*8 - 60, refLink.GetGame().GetHeight()/10*4 + 10,null);
+
+        Image enemy = Assets.enemy.getScaledInstance(refLink.GetGame().GetWidth()/5,refLink.GetGame().GetHeight()/5,Image.SCALE_DEFAULT);
+        g.drawImage(enemy,refLink.GetGame().GetWidth()/16, refLink.GetGame().GetHeight()/10*4 - 20,null);
+        g.drawImage(enemy,refLink.GetGame().GetWidth()/6, refLink.GetGame().GetHeight()/10*6,null);
+
+        Image bomb = Assets.bomb[1].getScaledInstance(refLink.GetGame().GetWidth()/6,refLink.GetGame().GetHeight()/6,Image.SCALE_DEFAULT);
+        g.drawImage(bomb,refLink.GetGame().GetWidth()/10*6 + 10, refLink.GetGame().GetHeight()/10*5,null);
+        */
+
+
+        Image destructableWall = Assets.destructableWall.getScaledInstance(refLink.GetGame().GetWidth()/8,refLink.GetGame().GetHeight()/8,Image.SCALE_DEFAULT);
+
+        for(int i = 0; i < 8; i++){
+            g.drawImage(destructableWall,refLink.GetGame().GetWidth()/8*i, refLink.GetGame().GetHeight()/8*7,null);
+        }
+        for(int i = 0; i < 8; i++){
+            g.drawImage(destructableWall,refLink.GetGame().GetWidth()/8*i, 0,null);
+        }
 
 
         g.setFont(buttonFont);

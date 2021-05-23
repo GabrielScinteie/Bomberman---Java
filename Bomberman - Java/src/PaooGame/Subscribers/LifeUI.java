@@ -10,7 +10,7 @@ public class LifeUI implements Subscriber{
 
     public LifeUI(){
         super();
-        lifesLeft = 3;
+        lifesLeft = 5;
     }
 
     public void update(Hero hero){

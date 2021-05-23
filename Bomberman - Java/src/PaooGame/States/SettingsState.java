@@ -18,10 +18,15 @@ import java.awt.image.BufferedImage;
 public class SettingsState extends State
 {
 
+    String soundOn = "ON";
+
     Font buttonFont;
+    Font buttonFont2;
     Font titleFont;
 
     public Rectangle backButton;
+    public Rectangle soundButton;
+
     /*! \fn public SettingsState(RefLinks refLink)
         \brief Constructorul de initializare al clasei.
 
@@ -36,8 +41,10 @@ public class SettingsState extends State
         int GameHeight = refLink.GetGame().GetHeight();
 
         titleFont = new Font("arial", Font.BOLD,80);
-        buttonFont = new Font("arial",Font.BOLD,40);
-        backButton = new Rectangle(GameWidth/10*4, GameHeight/8 * 5,GameWidth/5, GameHeight/12);
+        buttonFont = new Font("arial",Font.BOLD,35);
+        buttonFont2 = new Font("arial",Font.BOLD,40);
+        soundButton = new Rectangle(GameWidth/10*4, GameHeight/8 * 4,GameWidth/5, GameHeight/12);
+        backButton = new Rectangle(GameWidth/10*4, GameHeight/8 * 6,GameWidth/5, GameHeight/12);
     }
 
     /*! \fn public void Update()
@@ -59,6 +66,21 @@ public class SettingsState extends State
                 if(backButton.contains(p)){
                     State.SetState(game.getMenuState());
                     game.getGameWnd().GetWndFrame().requestFocusInWindow();
+                }
+
+                if(soundButton.contains(p)){
+                    if(soundOn == "ON")
+                    {
+                        soundOn = "OFF";
+                        refLink.GetGame().getAudio().stopMusic();
+                    }
+
+                    else
+                    {
+                        soundOn = "ON";
+                        refLink.GetGame().getAudio().startMusic();
+                    }
+
                 }
             }
         }
@@ -101,11 +123,15 @@ public class SettingsState extends State
         g.setColor(Color.white);
         g.drawString("BomberBoy", refLink.GetGame().GetWidth()/4 + 30,refLink.GetGame().GetHeight()/4 + 30);
 
-        g.setFont(buttonFont);
+        g.setFont(buttonFont2);
         g.setColor(Color.WHITE);
 
         g.drawString("Back",backButton.x + backButton.width/4, backButton.y + backButton.height/10*8);
 
+        g.setFont(buttonFont);
+        g.drawString("Sound:" + soundOn,soundButton.x + 8, soundButton.y + soundButton.height/10*8);
+
+        g2d.draw(soundButton);
         g2d.draw(backButton);
     }
 }

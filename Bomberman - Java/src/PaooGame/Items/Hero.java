@@ -11,6 +11,7 @@ import PaooGame.Graphics.Assets;
 import PaooGame.Bombs.*;
 import PaooGame.States.State;
 import PaooGame.Subscribers.Subscriber;
+import PaooGame.db.DatabaseOperations;
 
 /*! \class public class Hero extends Character
     \brief Implementeaza notiunea de erou/player (caracterul controlat de jucator).
@@ -29,7 +30,9 @@ public class Hero extends Character
     private double bombCooldown;
     private boolean dead;
     private int lifesLeft;
+    private boolean levelFinished = false;
     private ArrayList<Subscriber> subscribers = new ArrayList<Subscriber>();
+
     /*! \fn public Hero(RefLinks refLink, float x, float y)
         \brief Constructorul de initializare al clasei Hero.
 
@@ -54,7 +57,7 @@ public class Hero extends Character
         image = Assets.heroStop;
         timeSinceLastBomb = System.nanoTime();
         bombCooldown = 1;
-        lifesLeft = 3;
+        lifesLeft = 5;
         dead = false;
             ///Stabilieste pozitia relativa si dimensiunea dreptunghiului de coliziune, starea implicita(normala)
         normalBounds.x = 0;
@@ -67,6 +70,8 @@ public class Hero extends Character
         attackBounds.y = 10;
         attackBounds.width = 38;
         attackBounds.height = 38;
+
+        speed = 2;
     }
 
     public static Hero getInstance(RefLinks refLink, int x, int y){
@@ -79,6 +84,7 @@ public class Hero extends Character
 
     public void reset(){
         lifesLeft = 3;
+        levelFinished = false;
     }
 
     @Override
@@ -154,10 +160,23 @@ public class Hero extends Character
             }
         }
 
+        /// verific coliziunea cu usa
+        Rectangle temp1 = new Rectangle(bounds);
+        Rectangle temp2 = new Rectangle(Door.getInstance().getBounds());
+        temp1.x += x + xMove;
+        temp1.y += y + yMove;
+        temp2.x += Door.getInstance().getX();
+        temp2.y += Door.getInstance().getY();
+
+        if(temp1.intersects(temp2) && EnemiesManager.getAllEnemies().size() == 0){
+            levelFinished = true;
+            return true;
+        }
+
         return false;
     }
 
-
+    public boolean isLevelFinished(){return levelFinished;}
 
     /*! \fn public void Update()
         \brief Actualizeaza pozitia si imaginea eroului.
@@ -275,7 +294,7 @@ public class Hero extends Character
 
                 // +4 pentru a centra mai bine bomba
                 BombManager.getallBombs().add(new Bomb(refLink,(int)xInt/32*32 ,(int)yInt/32*32));
-                System.out.println("Am adaugat bomba");
+                //System.out.println("Am adaugat bomba");
                 timeSinceLastBomb = System.nanoTime();
             }
 

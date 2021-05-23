@@ -1,5 +1,6 @@
 package PaooGame;
 
+import PaooGame.Audio.*;
 import PaooGame.GameWindow.GameWindow;
 import PaooGame.Graphics.Assets;
 import PaooGame.Input.KeyManager;
@@ -10,6 +11,7 @@ import PaooGame.Tiles.Tile;
 
 import java.awt.*;
 import java.awt.image.BufferStrategy;
+import java.util.Scanner;
 
 /*! \class Game
     \brief Clasa principala a intregului proiect. Implementeaza Game - Loop (Update -> Draw)
@@ -72,12 +74,17 @@ public class Game implements Runnable
     private State quitState;            /*!< Referinta catre inchidere joc.*/
     private State aboutState;           /*!< Referinta catre about.*/
     private State levelCompletedState;  /*!< Referinta catre starea cand player-ul a castigat un level.*/
-    public State youLostState;          /*!< Referinta catre starea cand player-ul ramane fara vieti.*/
+    private State youLostState;         /*!< Referinta catre starea cand player-ul ramane fara vieti.*/
+    private State highscoreState;       /*!< Referinta catre highscore.*/
+    private State endState;             /*!< Referinta catre finalul jocului.*/
     private KeyManager keyManager;      /*!< Referinta catre obiectul care gestioneaza intrarile din partea utilizatorului.*/
     private MouseManager mouseManager;  /*!< Referinta catre obiectul care gestioneaza input-ul mouse-ului din partea utilizatorului*/
     private RefLinks refLink;           /*!< Referinta catre un obiect a carui sarcina este doar de a retine diverse referinte pentru a fi usor accesibile.*/
-
+    private Audio audio;  /*!<Referinta catre obiectul ce gestioneaza audio-ul*/
     private Tile tile; /*!< variabila membra temporara. Este folosita in aceasta etapa doar pentru a desena ceva pe ecran.*/
+
+    private String playerName;
+    private long time;
 
     /*! \fn public Game(String title, int width, int height)
         \brief Constructor de initializare al clasei Game.
@@ -100,6 +107,10 @@ public class Game implements Runnable
             ///Construirea obiectului de gestiune a evenimentelor de tastatura
         keyManager = new KeyManager();
         mouseManager = new MouseManager();
+
+        System.out.println("Introdu numele: ");
+        Scanner in = new Scanner(System.in);
+        playerName = in.nextLine();
 
     }
 
@@ -126,6 +137,8 @@ public class Game implements Runnable
             ///Se construieste obiectul de tip shortcut ce va retine o serie de referinte catre elementele importante din program.
         refLink = new RefLinks(this);
 
+        audio = new Audio();
+        audio.startMusic();
 
 
             ///Definirea starilor programului
@@ -135,6 +148,9 @@ public class Game implements Runnable
         chooseLevelState = new ChooseLevelState(refLink);
         youLostState = new YouLostState(refLink);
         levelCompletedState = new LevelCompletedState(refLink);
+        highscoreState = new HighscoreState(refLink);
+        endState = new EndState(refLink);
+        time = System.currentTimeMillis();
 
             ///Seteaza starea implicita cu care va fi lansat programul in executie
         State.SetState(menuState);
@@ -239,8 +255,6 @@ public class Game implements Runnable
     private void Update()
     {
 
-
-
         ///Trebuie obtinuta starea curenta pentru care urmeaza a se actualiza starea, atentie trebuie sa fie diferita de null.
         if(State.GetState() != null)
         {
@@ -250,6 +264,7 @@ public class Game implements Runnable
                 ///Actualizez starea curenta a jocului daca exista.
             State.GetState().Update();
         }
+
     }
 
     /*! \fn private void Draw()
@@ -336,8 +351,14 @@ public class Game implements Runnable
     public State getYouLostState(){return youLostState;}
     public State getLevelCompletedState(){return levelCompletedState;}
     public State getAboutState(){return aboutState;}
+    public State getHighscoreState(){return highscoreState;}
+    public State getEndState(){return endState;}
+
     public void setPlayState(PlayState playState){this.playState = playState;}
     public GameWindow getGameWnd(){return wnd;}
     public void setRunState(boolean x){runState = x;}
+    public Audio getAudio(){return audio;}
+    public String getPlayerName(){return playerName;}
+    public long getTime(){return time;}
 }
 

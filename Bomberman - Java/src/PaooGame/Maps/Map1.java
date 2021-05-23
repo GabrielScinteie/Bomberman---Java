@@ -6,7 +6,12 @@ import PaooGame.RefLinks;
 import PaooGame.Tiles.Tile;
 
 import java.awt.*;
+import java.io.BufferedReader;
 import java.io.File;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.Scanner;
 
 public class Map1 implements Map{
@@ -113,7 +118,34 @@ public class Map1 implements Map{
     public int[][] readMap(int noLines, int noCol) throws Exception{
 
         int[][] map = new int[noLines][noCol];
-        File file = new File("Map2.txt");
+
+        String fileName = "Map1";
+        String filePath = "";
+
+        BufferedReader reader;
+        Connection connection = null;
+        Statement stmt = null;
+
+        try{
+            Class.forName("org.sqlite.JDBC");
+            connection = DriverManager.getConnection("jdbc:sqlite:game.db");
+            connection.setAutoCommit(false);
+            stmt = connection.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM Files where Name = '" + fileName + "'");
+
+            while(rs.next()){
+                filePath = rs.getString("Path");
+            }
+
+            rs.close();
+            stmt.close();
+            connection.close();
+        }catch ( Exception e ) {
+            System.out.println("Eroare la database");
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+        }
+
+        File file = new File(filePath);
         Scanner scanner = new Scanner(file);
 
         for(int i = 0; i < noLines;  i++){
@@ -126,12 +158,13 @@ public class Map1 implements Map{
             }
         }
 
-        for(int i = 0; i < noLines;  i++){
+        /*for(int i = 0; i < noLines;  i++){
             for(int j = 0; j < noCol; j++){
                 System.out.print(map[i][j] + " ");
             }
             System.out.println();
         }
+        */
 
         for(int i = 0; i < noLines;  i++){
             for(int j = 0; j < noCol; j++){

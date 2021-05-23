@@ -31,7 +31,7 @@ public class YouLostState extends State{
 
         buttonFont = new Font("arial",Font.BOLD,40);
         titleFont = new Font("arial",Font.BOLD,90);
-        menuButton = new Rectangle(GameWidth/10*4 - GameWidth/50, GameHeight/2,GameWidth/4, GameHeight/10);
+        menuButton = new Rectangle(GameWidth/10*4 - GameWidth/50, GameHeight/8*6,GameWidth/4, GameHeight/12);
 
     }
 
@@ -63,11 +63,29 @@ public class YouLostState extends State{
     @Override
     public void Draw(Graphics g)
     {
+        Graphics2D g2d = (Graphics2D)g;
+
         BufferedImage backgroundImage = Assets.grass;
         Image background = backgroundImage.getScaledInstance(refLink.GetGame().GetWidth(),refLink.GetGame().GetHeight(),Image.SCALE_DEFAULT);
         g.drawImage(background,0,0,null);
 
-        Graphics2D g2d = (Graphics2D)g;
+        Image bomberboy = Assets.heroDead.getScaledInstance(refLink.GetGame().GetWidth()/4,refLink.GetGame().GetHeight()/4,Image.SCALE_DEFAULT);
+        g.drawImage(bomberboy,refLink.GetGame().GetWidth()/2 - 120, refLink.GetGame().GetHeight()/10*4 + 50,null);
+
+        Image enemy = Assets.enemy.getScaledInstance(refLink.GetGame().GetWidth()/4,refLink.GetGame().GetHeight()/4,Image.SCALE_DEFAULT);
+        g.drawImage(enemy,refLink.GetGame().GetWidth()/16, refLink.GetGame().GetHeight()/10*4 + 50,null);
+
+        Image enemy2 = Assets.enemy2.getScaledInstance(refLink.GetGame().GetWidth()/4,refLink.GetGame().GetHeight()/4,Image.SCALE_DEFAULT);
+        g.drawImage(enemy2,refLink.GetGame().GetWidth() - refLink.GetGame().GetWidth()/16 - refLink.GetGame().GetWidth()/4, refLink.GetGame().GetHeight()/10*4 + 50,null);
+
+        Image destructableWall = Assets.destructableWall.getScaledInstance(refLink.GetGame().GetWidth()/8,refLink.GetGame().GetHeight()/8,Image.SCALE_DEFAULT);
+
+        for(int i = 0; i < 8; i++){
+            g.drawImage(destructableWall,refLink.GetGame().GetWidth()/8*i, refLink.GetGame().GetHeight()/8*7,null);
+        }
+        for(int i = 0; i < 8; i++){
+            g.drawImage(destructableWall,refLink.GetGame().GetWidth()/8*i, 0,null);
+        }
 
 
         g.setFont(buttonFont);
@@ -76,7 +94,7 @@ public class YouLostState extends State{
         g.drawString("Main Menu", menuButton.x + menuButton.width / 12, menuButton.y + menuButton.height/4*3);
 
         g.setFont(titleFont);
-        g.setColor(Color.BLACK);
+        g.setColor(Color.RED);
         g.drawString("Game Over!", refLink.GetWidth()/4, refLink.GetHeight()/3);
 
     }
